@@ -184,7 +184,7 @@ int main(int argc, char **argv)
         image.copyTo(lines1);
         image.copyTo(lines2);
 
-        myHoughTransfLines(outThr, lines, 0, 180, houthTh);   // vince
+        myHoughTransfLines(outThr, lines, 0, 180, houthTh);    // vince
         myHoughTransfLines(canny, lines1, 0, 180, houthTh);    // prof
         myHoughTransfLines(contours, lines2, 0, 180, houthTh); // opencv
 
@@ -627,7 +627,10 @@ void findOptTreshs(const cv::Mat &src, float &tlow, float &thigh)
     else
         thigh = 1.3 * medianPix;
 
-    std::cout << "\n(doubleTh) Optiaml tresholds: \ntlow: " << tlow << " - thigh: " << thigh << std::endl;
+    std::cout << "Optiaml tresholds: tlow: " << tlow << " - thigh: " << thigh
+              << std::endl
+              << std::endl
+              << std::endl;
 
     return;
 }
@@ -869,6 +872,10 @@ void myHoughTransfLines(const cv::Mat &image, cv::Mat &lines, const int minTheta
     cv::namedWindow("Accumulator", cv::WINDOW_NORMAL);
     cv::imshow("Accumulator", acc);
 
+    std::cout << "Points: "
+              << std::endl
+              << std::endl;
+
     cv::Point start_point, end_point;
 
     for (int r = 0; r < acc.rows; ++r)
@@ -888,6 +895,10 @@ void myHoughTransfLines(const cv::Mat &image, cv::Mat &lines, const int minTheta
             }
         }
     }
+
+    std::cout
+        << std::endl
+        << std::endl;
 
     return;
 }
