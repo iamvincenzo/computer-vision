@@ -3,7 +3,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-// std:
+// std
 #include <fstream>
 #include <iostream>
 #include <string>
