@@ -5,7 +5,7 @@
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/xfeatures2d/nonfree.hpp>
 
-// std:
+// std
 #include <fstream>
 #include <iostream>
 #include <string>
