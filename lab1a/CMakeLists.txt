@@ -14,7 +14,7 @@ add_executable(conv convolution.cpp)
 target_link_libraries(conv ${OpenCV_LIBS})
 install(TARGETS conv RUNTIME DESTINATION bin)
 
-# add_executable(conv3D conv3D.cpp)
-# target_link_libraries(conv3D ${OpenCV_LIBS})
-# install(TARGETS conv3D RUNTIME DESTINATION bin)
+add_executable(conv3D conv3D.cpp)
+target_link_libraries(conv3D ${OpenCV_LIBS})
+install(TARGETS conv3D RUNTIME DESTINATION bin)
 

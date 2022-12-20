@@ -31,10 +31,6 @@ void addZeroPadding(const cv::Mat &src, cv::Mat &padded, const int padH, const i
 		}
 	}
 
-	// display image
-	cv::namedWindow("padded image", cv::WINDOW_NORMAL);
-	cv::imshow("padded image", padded);
-
 	return;
 }
 
@@ -49,7 +45,6 @@ void myfilter2D(const cv::Mat &src, const cv::Mat &krn, cv::Mat &out, int stride
 
 	int padH = (krn.rows - 1) / 2;
 	int padW = (krn.cols - 1) / 2;
-	// int zpad = (krn.channels() - 1) / 2;
 
 	cv::Mat padded;
 	addZeroPadding(src, padded, padH, padW);
@@ -63,11 +58,11 @@ void myfilter2D(const cv::Mat &src, const cv::Mat &krn, cv::Mat &out, int stride
 	float g_kl;
 	float w_sum;
 
-	for (int v = 0; v < out.rows; ++v)
+	for (int c = 0; c < out.channels(); ++c)
 	{
-		for (int u = 0; u < out.cols; ++u)
+		for (int v = 0; v < out.rows; ++v)
 		{
-			for (int c = 0; c < out.channels(); ++c)
+			for (int u = 0; u < out.cols; ++u)
 			{
 				w_sum = 0.0;
 
@@ -75,15 +70,12 @@ void myfilter2D(const cv::Mat &src, const cv::Mat &krn, cv::Mat &out, int stride
 				{
 					for (int l = 0; l < krn.cols; ++l)
 					{
-						for (int cc = 0; cc < krn.channels(); ++cc)
-						{
-							g_kl = krn.at<cv::Vec3f>(k, l)[cc];
-							w_sum += g_kl * (float)padded.at<cv::Vec3b>((v * stride) + k, (u * stride) + l)[c];
-						}
+						g_kl = krn.data[(l + k * krn.cols) * krn.elemSize()];
+						w_sum += g_kl * (float)padded.data[(((u * stride) + l) + ((v * stride) + k) * padded.cols) * padded.elemSize() + c * padded.elemSize1()];
 					}
 				}
 
-				out.at<cv::Vec3i>(v, u)[c] = w_sum;
+				out.data[(u + v * padded.cols) * out.elemSize() + c * out.elemSize1()] = w_sum;
 			}
 		}
 	}
@@ -144,12 +136,11 @@ int main(int argc, char **argv)
 
 		// custom convolution
 		cv::Mat myfilter2Dresult;
-		cv::Mat custom_kernel(ksize, ksize, CV_32FC3, 1.0 / (ksize * ksize));
-		myfilter2D(image, custom_kernel, myfilter2Dresult);
+		cv::Mat custom_kernel(ksize, ksize, CV_32FC1, 1.0 / (ksize * ksize));
+		myfilter2D(grey, custom_kernel, myfilter2Dresult);
 
-		/*cv::Mat custom_blurred;
-		cv::filter2D(grey, custom_blurred, CV_32F, custom_kernel);
-		cv::convertScaleAbs(custom_blurred, custom_blurred);
+		// cv::Mat convDisplay;
+		// myfilter2Dresult.convertTo(convDisplay, CV_8UC3);
 
 		// display image
 		cv::namedWindow("original image", cv::WINDOW_NORMAL);
@@ -159,12 +150,9 @@ int main(int argc, char **argv)
 		cv::namedWindow("grey", cv::WINDOW_NORMAL);
 		cv::imshow("grey", grey);
 
-		// display custom convolution result
-		cv::namedWindow("myfilter2D conv", cv::WINDOW_NORMAL);
-		cv::imshow("myfilter2D conv", myfilter2Dresult);
-
-		cv::namedWindow("opencv conv", cv::WINDOW_NORMAL);
-		cv::imshow("opencv conv", custom_blurred);*/
+		// // display custom convolution result
+		// cv::namedWindow("myfilter2D conv", cv::WINDOW_NORMAL);
+		// cv::imshow("myfilter2D conv", myfilter2Dresult);
 
 		//////////////////////
 
