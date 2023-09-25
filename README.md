@@ -1,2 +1,2 @@
-# fondamenti-di-visione-artificiale
-Contiene esercitazioni su opencv in c++.
+# Fundamentals of Computer Vision
+This repository contains exercises on OpenCV in C++, covering various topics such as image processing, computer vision algorithms, and applications in computer vision projects. The exercises specifically focus on topics like SIFT, implementations of convolution operation, Bayer pattern, background subtraction, Otsu's method, mathematical morphology, camera pinhole model, edge detection, Hough transform and implementation of the Canny edge detector algorithm.
